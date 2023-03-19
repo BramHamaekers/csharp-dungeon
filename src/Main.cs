@@ -1,6 +1,6 @@
 using System;
 
-public class MainClass {
+public class Program {
     public static void Main(String[] args) {
         DungeonGenerator2D dungeon = new DungeonGenerator2D();
         int gridSize = FLAGS.grid_size;
