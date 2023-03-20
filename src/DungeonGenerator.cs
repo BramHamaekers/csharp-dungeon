@@ -1,5 +1,3 @@
-using System;
-
 public class DungeonGenerator2D {
     int gridSize;
     int roomCount;
@@ -23,7 +21,6 @@ public class DungeonGenerator2D {
                 display();
                 Console.WriteLine();
             }
-
         }
     }
 
@@ -41,8 +38,8 @@ public class DungeonGenerator2D {
         if (room == null) return false;
         if (room.origin.Item1 - FLAGS.room_buffer< 0 || room.origin.Item2 - FLAGS.room_buffer < 0) return false;
         if (room.origin.Item1 + FLAGS.room_buffer > gridSize || room.origin.Item2 + FLAGS.room_buffer > gridSize) return false;
-        if (room.origin.Item1 + room.vector2D.Item1  - FLAGS.room_buffer < 0 || room.origin.Item2 + room.vector2D.Item2 - FLAGS.room_buffer < 0) return false;
-        if (room.origin.Item1 + room.vector2D.Item1 + FLAGS.room_buffer > gridSize || room.origin.Item2 + room.vector2D.Item2 + FLAGS.room_buffer > gridSize) return false;
+        if (room.origin.Item1 + room.sizeVector.Item1  - FLAGS.room_buffer < 0 || room.origin.Item2 + room.sizeVector.Item2 - FLAGS.room_buffer < 0) return false;
+        if (room.origin.Item1 + room.sizeVector.Item1 + FLAGS.room_buffer > gridSize || room.origin.Item2 + room.sizeVector.Item2 + FLAGS.room_buffer > gridSize) return false;
         foreach (Room oldRoom in rooms) {
             if (room.Intersects(oldRoom)) return false;
         } 
@@ -54,11 +51,11 @@ public class DungeonGenerator2D {
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
                 if (grid[i,j] == 1) Console.Write("# ");
+                else if (grid[i,j] == 2) Console.Write("O ");
                 else Console.Write(". ");
             }
         Console.WriteLine();
         }
-        
     }
 
     public int[,] generateGrid() {
@@ -70,11 +67,11 @@ public class DungeonGenerator2D {
     }
 
     public int[,] addRoomToGrid(int[,] grid, Room room) {
-        for (int i = room.origin.Item1; i < room.origin.Item1 + room.vector2D.Item1; i++)
-            for (int j = room.origin.Item2; j < room.origin.Item2 + room.vector2D.Item2; j++) {
+        for (int i = room.origin.Item1; i < room.origin.Item1 + room.sizeVector.Item1; i++)
+            for (int j = room.origin.Item2; j < room.origin.Item2 + room.sizeVector.Item2; j++) {
                 grid[i,j] = 1;
             }
-                
+        grid[room.vertex.Item1, room.vertex.Item2] = 2;   
         return grid;
     }
 }
